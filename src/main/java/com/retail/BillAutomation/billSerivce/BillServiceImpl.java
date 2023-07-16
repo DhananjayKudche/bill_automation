@@ -2,6 +2,7 @@ package com.retail.BillAutomation.billSerivce;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class BillServiceImpl implements BillService {
 	
 	@Override
 	public UserData saveInDB(UserData user) {
+		user.setUserCode(UUID.randomUUID().toString());
 		UserData savedUser = billRepository.save(user);
 		return savedUser;
 	}
