@@ -72,6 +72,10 @@ public class BillServiceImpl implements BillService {
 		List<UserData> result = billRepository.findByBillAmountGreaterThan(billAmount);
 		return result;
 	}
+	
+	public List<UserData> findByTypeOfMembership(String membership){
+		return billRepository.findByMembership(membership);
+	}
 
 
 
