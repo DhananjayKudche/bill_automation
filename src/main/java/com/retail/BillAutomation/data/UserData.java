@@ -33,7 +33,17 @@ public class UserData implements Serializable {
 	private String membership;
 	@Column
 	private float billAmount;
+	@Column
+	private String userCode;
 	
+	public String getUserCode() {
+		return userCode;
+	}
+
+	public void setUserCode(String userCode) {
+		this.userCode = userCode;
+	}
+
 	@OneToMany(cascade = CascadeType.ALL, targetEntity = Product.class, fetch = FetchType.EAGER)
 	@JoinColumn(name= "up_fk", referencedColumnName = "id")
 	private List<Product> products;
@@ -94,10 +104,12 @@ public class UserData implements Serializable {
 		this.products = products;
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "UserData [id=" + id + ", name=" + name + ", contact=" + contact + ", city=" + city + ", membership="
-				+ membership + ", billAmount=" + billAmount + ", products=" + products + "]";
+				+ membership + ", billAmount=" + billAmount + ", userCode=" + userCode + ", products=" + products + "]";
 	}
 
 	public UserData() {
