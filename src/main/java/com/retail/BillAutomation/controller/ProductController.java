@@ -13,14 +13,15 @@ import com.retail.BillAutomation.data.Product;
 
 @RestController
 public class ProductController {
-	
+
 	@Autowired
 	private ProductServiceImpl productServiceImpl;
-	
+
 	@GetMapping("/getproducts")
-	public List<Product> getProducts(){
+	public List<Product> getProducts() {
 		return productServiceImpl.fetchProductsFromDB();
 	}
+
 	@PostMapping("/save")
 	public Product saveIntoDB(@RequestBody Product product) {
 		return productServiceImpl.saveProduct(product);

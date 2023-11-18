@@ -20,13 +20,13 @@ public class JsonController {
 
 	@GetMapping("/jsondata")
 	public UserData getUserDataForJsonByName(@RequestParam String name) {
-		
+
 		return jsonServiceImpl.fetchUserFromJsonByUserName(name);
 	}
 
 	@GetMapping("/alljsondata")
 	public List<UserData> fetchAllUserFromJson() {
-		
+
 		return jsonServiceImpl.fetchAllUserFromJson();
 	}
 }

@@ -10,16 +10,16 @@ import com.retail.BillAutomation.repository.ProductRepository;
 
 @Service
 public class ProductServiceImpl {
-	
+
 	@Autowired
 	private ProductRepository productRepository;
-	
+
 	public Product saveProduct(Product product) {
 		Product savedProduct = productRepository.save(product);
 		return savedProduct;
 	}
-	
-	public List<Product> fetchProductsFromDB(){
+
+	public List<Product> fetchProductsFromDB() {
 		return productRepository.findAll();
 	}
 

@@ -20,8 +20,8 @@ public class JsonServiceImpl {
 	public UserData fetchUserFromJsonByUserName(String name) {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
-		String inputJsonFilePath = "D:" + File.separator + "My Projects" + File.separator + "json_location" + File.separator
-				+ "User_Jsons" + File.separator + "user_" + name + ".json";
+		String inputJsonFilePath = "D:" + File.separator + "My Projects" + File.separator + "json_location"
+				+ File.separator + "User_Jsons" + File.separator + "user_" + name + ".json";
 		File inputJsonFile = null;
 		UserData userdataFromjson = null;
 		try {
@@ -38,7 +38,7 @@ public class JsonServiceImpl {
 		}
 		return userdataFromjson;
 	}
-	
+
 	public List<UserData> fetchAllUserFromJson() {
 		StopWatch stopWatch = new StopWatch();
 		stopWatch.start();
