@@ -1,6 +1,6 @@
 package com.retail.BillAutomation.billSerivce;
 
-import java.util.List;
+import java.util.Map;
 
 import com.retail.BillAutomation.data.UserData;
 
@@ -8,5 +8,5 @@ public interface BillService {
 	
 	public UserData saveInDB(UserData user);
 	
-	List<UserData> findByBillAmountGreaterThan(Integer billAmount);
+	Map<String, String> findByBillAmountGreaterThan(Integer billAmount);
 }

@@ -25,4 +25,13 @@ public interface BillRepository extends JpaRepository<UserData, Integer>{
 	 */
 	@Query("select u from UserData u where u.membership = ?1" )
 	List<UserData> findByMembership(String membership);
+	
+	/**
+	 * @param name
+	 * @param city
+	 * @return
+	 */
+	List<UserData> findUserDataByNameAndCity(String name, String city);
+	
+	
 }
