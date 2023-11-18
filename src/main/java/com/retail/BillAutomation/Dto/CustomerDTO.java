@@ -3,7 +3,7 @@ package com.retail.BillAutomation.Dto;
 import com.retail.BillAutomation.data.UserData;
 
 public class CustomerDTO {
-	
+
 	private UserData userData;
 
 	public UserData getUserData() {
@@ -28,7 +28,5 @@ public class CustomerDTO {
 	public String toString() {
 		return "CustomerDTO [userData=" + userData + "]";
 	}
-	
-	
 
 }

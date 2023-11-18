@@ -99,7 +99,7 @@ public class BillServiceImpl implements BillService {
 		List<UserData> fetchedData = billRepository.findAll();
 		stopWatch.stop();
 		System.out.println("Time Taken to fetch all data from DB is " + stopWatch.getTotalTimeMillis() + " ms");
-		
+
 		return fetchedData;
 	}
 
@@ -198,9 +198,7 @@ public class BillServiceImpl implements BillService {
 
 		} catch (Exception e) {
 			e.getMessage();
-			// TODO: handle exception
 		} finally {
-			// TODO: handle finally clause
 			FileUtils.forceDelete(file);
 			System.out.println("File deleted " + file.getName());
 		}
@@ -243,17 +241,13 @@ public class BillServiceImpl implements BillService {
 	 */
 	public UserData saveUserDataToJsonByUserNameAfterCreatingUser(UserData createdUser) throws IOException {
 
-//		List<UserData> listOfUserData = fetchAllUserData();
 		ObjectMapper objectMapper = new ObjectMapper();
 		File userJson = null;
-//		for (UserData eachUserData : listOfUserData) {
 		String filePath = "D:" + File.separator + "My Projects" + File.separator + "json_location" + File.separator
 				+ "User_Jsons" + File.separator + "user_" + createdUser.getName() + ".json";
 		userJson = new File(filePath);
 		System.out.println("Each User is being written is: " + createdUser);
 		objectMapper.writeValue(userJson, createdUser);
-
-//		}
 
 		return createdUser;
 	}

@@ -92,17 +92,17 @@ public class BillController {
 	public UserData fetchDataFromJson(@RequestParam String jsonPath) throws IOException {
 		return billService.fetchDataFromJson(jsonPath);
 	}
-	
+
 	@PostMapping("/saveUserDataToJsonByUserName")
 	public List<UserData> saveUserDataToJsonByUserName() throws IOException {
 		return billService.saveUserDataToJsonByUserName();
 	}
-	
+
 	@PostMapping("/saveUserDataToJsonByUserNameAfterCreatingUser")
 	public List<UserData> saveUserDataToJsonByUserNameAfterCreatingUser() throws IOException {
 		return billService.saveUserDataToJsonByUserName();
 	}
-	
+
 	@DeleteMapping("/deleteById")
 	public void deleteEntryByIdFromRepo(@RequestParam Integer id) {
 		billRepository.deleteById(id);

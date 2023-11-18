@@ -9,29 +9,28 @@ import org.springframework.stereotype.Repository;
 import com.retail.BillAutomation.data.UserData;
 
 @Repository
-public interface BillRepository extends JpaRepository<UserData, Integer>{
-	
+public interface BillRepository extends JpaRepository<UserData, Integer> {
+
 	/**
 	 * 
 	 * @param billAmount
 	 * @return
 	 */
 	List<UserData> findByBillAmountGreaterThan(Integer billAmount);
-	
+
 	/**
 	 * 
 	 * @param membership
 	 * @return
 	 */
-	@Query("select u from UserData u where u.membership = ?1" )
+	@Query("select u from UserData u where u.membership = ?1")
 	List<UserData> findByMembership(String membership);
-	
+
 	/**
 	 * @param name
 	 * @param city
 	 * @return
 	 */
 	List<UserData> findUserDataByNameAndCity(String name, String city);
-	
-	
+
 }

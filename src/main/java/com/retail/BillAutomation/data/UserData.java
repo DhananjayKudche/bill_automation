@@ -14,7 +14,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name="user_data")
+@Table(name = "user_data")
 public class UserData implements Serializable {
 	/**
 	 * 
@@ -35,7 +35,7 @@ public class UserData implements Serializable {
 	private float billAmount;
 	@Column
 	private String userCode;
-	
+
 	public String getUserCode() {
 		return userCode;
 	}
@@ -45,7 +45,7 @@ public class UserData implements Serializable {
 	}
 
 	@OneToMany(cascade = CascadeType.ALL, targetEntity = Product.class, fetch = FetchType.EAGER)
-	@JoinColumn(name= "up_fk", referencedColumnName = "id")
+	@JoinColumn(name = "up_fk", referencedColumnName = "id")
 	private List<Product> products;
 
 	public int getId() {
@@ -104,8 +104,6 @@ public class UserData implements Serializable {
 		this.products = products;
 	}
 
-
-
 	@Override
 	public String toString() {
 		return "UserData [id=" + id + ", name=" + name + ", contact=" + contact + ", city=" + city + ", membership="
@@ -116,6 +114,5 @@ public class UserData implements Serializable {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
+
 }
