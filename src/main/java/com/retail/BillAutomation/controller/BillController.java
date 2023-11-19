@@ -6,23 +6,24 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.retail.BillAutomation.Dto.ResponseDTO;
 import com.retail.BillAutomation.billSerivce.BillServiceImpl;
 import com.retail.BillAutomation.data.UserData;
 import com.retail.BillAutomation.repository.BillRepository;
 
-@Controller
-@ResponseBody
+@RestController
+@RequestMapping("/billdata")
 public class BillController {
 
 	@Autowired
@@ -35,6 +36,12 @@ public class BillController {
 	public List<UserData> getAllUserData() {
 		System.out.println("Fetching UserData from DB");
 		return billService.fetchAllUserData();
+	}
+	
+	@GetMapping("/datajson")
+	public List<UserData> getAllUserDataFromJsonService() {
+		System.out.println("Fetching UserData from JsonService");
+		return billService.fetchAllUserDataFromJsonService();
 	}
 
 	@PostMapping("/create")

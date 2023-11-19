@@ -11,9 +11,12 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -32,6 +35,11 @@ public class BillServiceImpl implements BillService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	private Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
 
 	/**
 	 * @param user
@@ -101,6 +109,23 @@ public class BillServiceImpl implements BillService {
 		System.out.println("Time Taken to fetch all data from DB is " + stopWatch.getTotalTimeMillis() + " ms");
 
 		return fetchedData;
+	}
+	
+	/**
+	 * @return
+	 */
+	public List<UserData> fetchAllUserDataFromJsonService() {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
+		// localhost:8082/json/alljsondata
+		ArrayList<UserData> res = restTemplate.getForObject("http://localhost:8082/json/alljsondata",
+				ArrayList.class);
+		log.info("fetched data is {}", res);
+		stopWatch.stop();
+		System.out.println("Time Taken to fetch all data from DB is " + stopWatch.getTotalTimeMillis() + " ms");
+
+		return res;
 	}
 
 	/**
