@@ -1,47 +1,68 @@
-package com.retail.BillAutomation.controller;
+ package com.retail.BillAutomation.controller;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StopWatch;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.retail.BillAutomation.Dto.ResponseDTO;
 import com.retail.BillAutomation.billSerivce.BillServiceImpl;
 import com.retail.BillAutomation.data.UserData;
+import com.retail.BillAutomation.rabbitmq.MessageSender;
 import com.retail.BillAutomation.repository.BillRepository;
 
-@Controller
-@ResponseBody
+@RestController
+@RequestMapping("/billdata")
 public class BillController {
+	
+    private static final Logger log = LoggerFactory.getLogger(BillController.class);
 
 	@Autowired
 	private BillServiceImpl billService;
 
 	@Autowired
 	private BillRepository billRepository;
-
+	
+	  
 	@GetMapping("/data")
 	public List<UserData> getAllUserData() {
-		System.out.println("Fetching UserData from DB");
+		log.info("Fetching UserData from DB");
+		// Sending a message 
 		return billService.fetchAllUserData();
+	}
+	
+	
+	@GetMapping("/dataBasedOnResponse")
+	public List<UserData> getDataBasedOnResponse() {
+		log.info("Fetching UserData from DB");
+		// Sending a message 
+		return billService.fetchAllUserData();
+	}
+	
+	@GetMapping("/datajson")
+	public List<UserData> getAllUserDataFromJsonService() {
+		System.out.println("Fetching UserData from JsonService");
+		return billService.fetchAllUserDataFromJsonService();
 	}
 
 	@PostMapping("/create")
 	public List<UserData> saveUser(@RequestBody List<UserData> user) throws IOException {
 		if (null != user) {
 			System.out.println(user);
-			List<UserData> result = billService.saveInDB(user);
+			List<UserData> result = this.billRepository.save(null);
 			System.out.println(result);
 			return result;
 		}

@@ -11,9 +11,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StopWatch;
+import org.springframework.web.client.RestTemplate;
 
 import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
@@ -21,27 +25,44 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.retail.BillAutomation.Dto.ResponseDTO;
 import com.retail.BillAutomation.data.Product;
 import com.retail.BillAutomation.data.UserData;
+import com.retail.BillAutomation.rabbitmq.MessageSender;
 import com.retail.BillAutomation.repository.BillRepository;
 import com.retail.BillAutomation.repository.ProductRepository;
 
 @Service
 public class BillServiceImpl implements BillService {
-
+	
+	private static Logger log = LoggerFactory.getLogger(BillServiceImpl.class);
+	
 	@Autowired
 	private BillRepository billRepository;
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private RestTemplate restTemplate;
 
+	@Autowired 
+	private MessageSender messageSender; 
+
+	// implement hashmap for handling ipodnment for post request
+	
+	// implement bulk loading of data
 	/**
 	 * @param user
 	 * @return
 	 * @throws IOException
 	 */
 	public List<UserData> saveInDB(List<UserData> user) throws IOException {
+
 		List<UserData> latestAddedEntries = new ArrayList<>();
+		UserData updatedUser = new UserData();
 		for (UserData eachUser : user) {
+
+			eachUser.setName(eachUser.getName());
 			eachUser.setUserCode(UUID.randomUUID().toString());
+
 			UserData savedUser = billRepository.save(eachUser);
 			latestAddedEntries.add(savedUser);
 
@@ -98,9 +119,46 @@ public class BillServiceImpl implements BillService {
 		stopWatch.start();
 		List<UserData> fetchedData = billRepository.findAll();
 		stopWatch.stop();
-		System.out.println("Time Taken to fetch all data from DB is " + stopWatch.getTotalTimeMillis() + " ms");
+		log.info("Time Taken to fetch all data from DB is : {} ms", stopWatch.getTotalTimeMillis());
 
+		messageSender.sendMessage(fetchedData);
 		return fetchedData;
+	}
+	
+	/**
+	 * @return
+	 */
+	public List<UserData> getAllDataBasedOnResponse() {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+		List<UserData> fetchedData = billRepository.findAll();
+		stopWatch.stop();
+		log.info("Time Taken to fetch all data from DB is : {} ms", stopWatch.getTotalTimeMillis());
+
+		messageSender.sendMessage(fetchedData);
+		return fetchedData;
+	}
+	
+	/**
+	 * @return
+	 */
+	public List<UserData> fetchAllUserDataFromJsonService() {
+		StopWatch stopWatch = new StopWatch();
+		stopWatch.start();
+
+		// localhost:8082/json/alljsondata
+	       ResponseEntity<List> responseOfUserData = restTemplate.getForEntity(
+	                "http://localhost:8082/json/alljsondata", List.class);
+
+		log.info("fetched data is {}", responseOfUserData);
+		stopWatch.stop();
+		System.out.println("Time Taken to fetch all data from DB is " + stopWatch.getTotalTimeMillis() + " ms");
+        if (responseOfUserData.getStatusCode().is2xxSuccessful()) {
+            return responseOfUserData.getBody();
+        } else {
+            // Handle error conditions based on status code
+            throw new RuntimeException("Error fetching data: " + responseOfUserData.getStatusCode());
+        }
 	}
 
 	/**
@@ -193,7 +251,6 @@ public class BillServiceImpl implements BillService {
 			System.out.println(userdataFromjson);
 			savedEntity = saveInDB(userdataFromjson);
 			String filePath = "D:/My Projects/json_location/user_product_write3.json";
-
 			objectMapper.writeValue(new File(filePath), savedEntity);
 
 		} catch (Exception e) {
