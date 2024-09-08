@@ -2,6 +2,8 @@ package com.retail.BillAutomation.repository;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -32,5 +34,21 @@ public interface BillRepository extends JpaRepository<UserData, Integer> {
 	 * @return
 	 */
 	List<UserData> findUserDataByNameAndCity(String name, String city);
+
+	/**
+	 * @param name
+	 * @return
+	 */
+	@Query("SELECT u.name FROM UserData u where u.name= :name")
+	String findUserNameByName(String name);
+	
+	
+    /**
+     * @param id
+     * @param pageable
+     * @return
+     */
+    Page<UserData> findByIdGreaterThan(Long id, Pageable pageable);
+
 
 }
